@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/juanmata42/202109-W1CH1-juanma-taboada#readme",
   "devDependencies": {
-    "eslint": "^7.32.0"
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2"
   }
 }
