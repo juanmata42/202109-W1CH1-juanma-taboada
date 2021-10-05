@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/juanmata42/202109-W1CH1-juanma-taboada/issues"
   },
-  "homepage": "https://github.com/juanmata42/202109-W1CH1-juanma-taboada#readme"
+  "homepage": "https://github.com/juanmata42/202109-W1CH1-juanma-taboada#readme",
+  "dependencies": {
+    "eslint": "^7.32.0"
+  }
 }
