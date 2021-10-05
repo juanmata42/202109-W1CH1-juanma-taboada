@@ -3,41 +3,41 @@ let su_game_board;
 let arrayVisionIA;
 const todasTusCasillas = [];
 const letrasGriegas =
-  " \u03B1\u03B2\u03B3\u03B4\u03B5\u03B6\u03B7\u03B8\u03D1\u03B9\u03BA";
+  ' \u03B1\u03B2\u03B3\u03B4\u03B5\u03B6\u03B7\u03B8\u03D1\u03B9\u03BA';
 const numRomanos = [
-  " ",
-  "I",
-  "II",
-  "III",
-  "Iv",
-  "v",
-  "vI",
-  "vII",
-  "vIII",
-  "Ix",
-  "x",
+  ' ',
+  'I',
+  'II',
+  'III',
+  'Iv',
+  'v',
+  'vI',
+  'vII',
+  'vIII',
+  'Ix',
+  'x',
 ];
-const trebuchetS = new Audio("trebuchet.mp3");
-const aguaS = new Audio("agua.mp3");
-const tocadoS = new Audio("tocado.mp3");
-const hundidoS = new Audio("hundido.mp3");
-const BSO = new Audio("01 Main Theme.mp3");
-const victoriaS = new Audio("victoria.mp3");
-const derrotaS = new Audio("derrota.mp3");
+const trebuchetS = new Audio('trebuchet.mp3');
+const aguaS = new Audio('agua.mp3');
+const tocadoS = new Audio('tocado.mp3');
+const hundidoS = new Audio('hundido.mp3');
+const BSO = new Audio('01 Main Theme.mp3');
+const victoriaS = new Audio('victoria.mp3');
+const derrotaS = new Audio('derrota.mp3');
 let civPJ;
 let civIA;
-const civilizaciones = ["grecia", "corea", "vikingos"];
+const civilizaciones = ['grecia', 'corea', 'vikingos'];
 let inicialN;
 let inicialNIA;
 let direccion = 0; // 0 horizontal,1 vertical
-const VoH = ["V", "H"];
+const VoH = ['V', 'H'];
 let barcoInsignia;
 const casillasOcupadas = [];
 const IDocupadas = [];
 let barcoNum = 0;
-let turn = "jugador";
+let turn = 'jugador';
 let turnoNumber = 1;
-let modo = "buscando";
+let modo = 'buscando';
 const posicionesTusBarcos = {
   50: [],
   40: [],
@@ -48,13 +48,13 @@ const posicionesTusBarcos = {
 };
 const barcosIMG = {
   5: {
-    vk: ["longboatH.png", "longboatV.png"],
-    G: ["trirremoH.png", "trirremoV.png"],
-    K: ["tortugaH.png", "tortugaV.png"],
+    vk: ['longboatH.png', 'longboatV.png'],
+    G: ['trirremoH.png', 'trirremoV.png'],
+    K: ['tortugaH.png', 'tortugaV.png'],
   },
-  4: ["transporteH.png", "transporteV.png"],
-  3: ["scoutH.png", "scoutV.png"],
-  2: ["canoaH.png", "canoaV.png"],
+  4: ['transporteH.png', 'transporteV.png'],
+  3: ['scoutH.png', 'scoutV.png'],
+  2: ['canoaH.png', 'canoaV.png'],
 };
 const casillasMediasIA = {
   50: null,
@@ -86,13 +86,13 @@ const verticales2NO = range(90, 100);
 // range generator for the game (because i love python's range(), does the same thing)
 
 function range(start, stop, step) {
-  if (typeof stop === "undefined") {
+  if (typeof stop === 'undefined') {
     // one param defined
     stop = start;
     start = 0;
   }
 
-  if (typeof step === "undefined") {
+  if (typeof step === 'undefined') {
     step = 1;
   }
 
@@ -112,7 +112,7 @@ function range(start, stop, step) {
 
 function tablero(box) {
   // crea el board visual
-  let visual_board = "";
+  let visual_board = '';
   for (let i = 0; i < 11; i++) {
     if (i === 0) {
       visual_board += `<tr><td class="numero">${numRomanos[0]}</td>`;
@@ -124,7 +124,7 @@ function tablero(box) {
       if (i === 0) {
         visual_board += `<td class="numero">${numRomanos[j + 1]}</td>`;
       } else if (i > 0) {
-        if (box === "suGrid") {
+        if (box === 'suGrid') {
           visual_board += `<td><button id="${
             index + 10 * (i - 1)
           }IA" class="row${
@@ -139,15 +139,15 @@ function tablero(box) {
         }
       }
     }
-    visual_board += "</tr>";
+    visual_board += '</tr>';
   }
 
   document.getElementById(box).innerHTML = visual_board;
-  document.getElementById(box).style.display = "block";
+  document.getElementById(box).style.display = 'block';
   // Pinta el board oculto
   // con un array bidimensional
   let idCasilla = 0;
-  if (box === "tuGrid") {
+  if (box === 'tuGrid') {
     tu_game_board = new Array(10);
     for (let i = 0; i < tu_game_board.length; i++) {
       tu_game_board[i] = new Array(10);
@@ -173,7 +173,7 @@ function tablero(box) {
         su_game_board[i][j] = {
           barco: 0,
           tocado: 0,
-          sentido: "",
+          sentido: '',
           casillaGrafica: document.getElementById(`${idCasilla}IA`),
         };
         idCasilla++;
@@ -205,14 +205,14 @@ function disparo(casilla) {
   const casillaTop = objetivo.top;
   const casillaLeft = objetivo.left;
   // hace aparecer y desaparecer el trebuchet
-  document.getElementById("trebuchet").style.display = "block";
+  document.getElementById('trebuchet').style.display = 'block';
   setTimeout(() => {
-    document.getElementById("trebuchet").style.display = "none";
+    document.getElementById('trebuchet').style.display = 'none';
   }, 1000);
   // hace aparecer el proyectil y que se mueva al sitio
   setTimeout(() => {
-    document.getElementById("fireball").style.display = "block";
-    document.getElementById("fireball").animate(
+    document.getElementById('fireball').style.display = 'block';
+    document.getElementById('fireball').animate(
       [
         // keyframes
         { left: `${casillaLeft}px`, top: `${casillaTop}px` },
@@ -225,15 +225,15 @@ function disparo(casilla) {
   }, 500);
   // hace desaparecer el proyectil
   setTimeout(() => {
-    document.getElementById("fireball").style.display = "none";
+    document.getElementById('fireball').style.display = 'none';
     hitOrMiss(casilla, su_game_board);
-    casilla.style.backgroundImage = "none";
+    casilla.style.backgroundImage = 'none';
     // check si ha ganado
     if (contBarcosTocadosIA.length === 19) {
       gameEnd();
     } else {
       // llama a disparar a la IA
-      document.getElementById("suGrid").style.pointerEvents = "none";
+      document.getElementById('suGrid').style.pointerEvents = 'none';
       setTimeout(() => {
         disparoIA();
       }, 500);
@@ -247,45 +247,45 @@ function civChosen(eleccion) {
   // escoge aleatoriamente una civ para la IA
   civilizaciones.splice(civilizaciones.indexOf(eleccion), 1);
   civIA = civilizaciones[Math.floor(Math.random() * civilizaciones.length)];
-  if (civIA === "grecia") {
-    inicialNIA = "G";
+  if (civIA === 'grecia') {
+    inicialNIA = 'G';
   }
-  if (civIA === "corea") {
-    inicialNIA = "K";
+  if (civIA === 'corea') {
+    inicialNIA = 'K';
   }
-  if (civIA === "vikingos") {
-    inicialNIA = "vk";
+  if (civIA === 'vikingos') {
+    inicialNIA = 'vk';
   }
-  if (eleccion === "grecia") {
-    document.getElementById("escogedor").style.display = "none";
-    const jingle = new Audio("byzantines.mp3");
+  if (eleccion === 'grecia') {
+    document.getElementById('escogedor').style.display = 'none';
+    const jingle = new Audio('byzantines.mp3');
     jingle.play();
-    const img = document.createElement("img");
-    img.src = "trirremoH.png";
+    const img = document.createElement('img');
+    img.src = 'trirremoH.png';
     barcoInsignia = img.src;
-    inicialN = "G";
-    document.getElementById("barco5").appendChild(img);
-  } else if (eleccion === "corea") {
-    document.getElementById("escogedor").style.display = "none";
-    const jingle = new Audio("koreans.mp3");
+    inicialN = 'G';
+    document.getElementById('barco5').appendChild(img);
+  } else if (eleccion === 'corea') {
+    document.getElementById('escogedor').style.display = 'none';
+    const jingle = new Audio('koreans.mp3');
     jingle.play();
-    const img = document.createElement("img");
-    img.src = "tortugaH.png";
+    const img = document.createElement('img');
+    img.src = 'tortugaH.png';
     barcoInsignia = img.src;
-    inicialN = "K";
-    document.getElementById("barco5").appendChild(img);
-  } else if (eleccion === "vikingos") {
-    document.getElementById("escogedor").style.display = "none";
-    const jingle = new Audio("vikings.mp3");
+    inicialN = 'K';
+    document.getElementById('barco5').appendChild(img);
+  } else if (eleccion === 'vikingos') {
+    document.getElementById('escogedor').style.display = 'none';
+    const jingle = new Audio('vikings.mp3');
     jingle.play();
-    const img = document.createElement("img");
-    img.src = "longboatH.png";
+    const img = document.createElement('img');
+    img.src = 'longboatH.png';
     barcoInsignia = img.src;
-    inicialN = "vk";
-    document.getElementById("barco5").appendChild(img);
+    inicialN = 'vk';
+    document.getElementById('barco5').appendChild(img);
   }
-  tablero("tuGrid");
-  document.getElementById("barcos").style.display = "flex";
+  tablero('tuGrid');
+  document.getElementById('barcos').style.display = 'flex';
   setTimeout(() => {
     BSO.play();
   }, 6000);
@@ -295,11 +295,11 @@ let longitud;
 let botonPulsado;
 
 function barcoSeleccion(barco, IDBarco) {
-  if (barco.id === "barco5") {
+  if (barco.id === 'barco5') {
     longitud = 5;
-  } else if (barco.id === "barco4") {
+  } else if (barco.id === 'barco4') {
     longitud = 4;
-  } else if (barco.id === "barco3_1" || barco.id === "barco3_2") {
+  } else if (barco.id === 'barco3_1' || barco.id === 'barco3_2') {
     longitud = 3;
   } else {
     longitud = 2;
@@ -315,9 +315,9 @@ let arrayID;
 function colocandoBarco(casilla) {
   // pone y quita la clase parpadeante al entrar y salir del "centro"
   function ponerQuitar() {
-    arrayCasillas.forEach((el) => el.classList.add("desplegando"));
-    casilla.addEventListener("mouseleave", (e) => {
-      arrayCasillas.forEach((el) => el.classList.remove("desplegando"));
+    arrayCasillas.forEach((el) => el.classList.add('desplegando'));
+    casilla.addEventListener('mouseleave', (e) => {
+      arrayCasillas.forEach((el) => el.classList.remove('desplegando'));
     });
   }
 
@@ -432,14 +432,14 @@ function colocandoBarco(casilla) {
   document.onkeydown = direccionCambio;
 
   function direccionCambio(e) {
-    if (e.keyCode == "82") {
+    if (e.keyCode == '82') {
       if (direccion == 1) {
         direccion = 0;
-        arrayCasillas.forEach((el) => el.classList.remove("desplegando"));
+        arrayCasillas.forEach((el) => el.classList.remove('desplegando'));
         colocandoBarco(casilla);
       } else {
         direccion = 1;
-        arrayCasillas.forEach((el) => el.classList.remove("desplegando"));
+        arrayCasillas.forEach((el) => el.classList.remove('desplegando'));
         colocandoBarco(casilla);
       }
     }
@@ -464,12 +464,12 @@ function despliegue(casilla) {
     updateOcupadas();
     // disable botón del barco pulsado
     longitud = 0;
-    botonPulsado.style.filter = "grayscale(100%)";
+    botonPulsado.style.filter = 'grayscale(100%)';
     botonPulsado.disabled = true;
   }
   // pone el barco en ambos boards
   function creaBarco(barco) {
-    const img = document.createElement("img");
+    const img = document.createElement('img');
     img.src = barco;
     // para el caso especial del barco insignia
     if (longitud == 5) {
@@ -486,7 +486,7 @@ function despliegue(casilla) {
   // con condicionales para que el barco pueda entrar en las casillas y no se salga por los lados
   if (longitud == 5) {
     if (direccion == 0 && !horizontales5NO.includes(parseInt(casilla.id))) {
-      sentido = "H";
+      sentido = 'H';
       if (!findCommonElements(IDocupadas, arrayID)) {
         creaBarco(barcoInsignia);
       }
@@ -494,52 +494,52 @@ function despliegue(casilla) {
       direccion == 1 &&
       !verticales5NO.includes(parseInt(casilla.id))
     ) {
-      sentido = "V";
+      sentido = 'V';
       if (!findCommonElements(IDocupadas, arrayID)) {
-        creaBarco(barcoInsignia.replace("H", "V"));
+        creaBarco(barcoInsignia.replace('H', 'V'));
       }
     }
   } else if (longitud == 4) {
     if (direccion == 0 && !horizontales4NO.includes(parseInt(casilla.id))) {
-      sentido = "H";
-      creaBarco("transporteH.png");
+      sentido = 'H';
+      creaBarco('transporteH.png');
     } else if (
       direccion == 1 &&
       !verticales4NO.includes(parseInt(casilla.id))
     ) {
-      sentido = "V";
+      sentido = 'V';
       if (!findCommonElements(IDocupadas, arrayID)) {
-        creaBarco("transporteV.png");
+        creaBarco('transporteV.png');
       }
     }
   } else if (longitud == 3) {
     if (direccion == 0 && !horizontales3NO.includes(parseInt(casilla.id))) {
-      sentido = "H";
+      sentido = 'H';
       if (!findCommonElements(IDocupadas, arrayID)) {
-        creaBarco("scoutH.png");
+        creaBarco('scoutH.png');
       }
     } else if (
       direccion == 1 &&
       !verticales3NO.includes(parseInt(casilla.id))
     ) {
-      sentido = "V";
+      sentido = 'V';
       if (!findCommonElements(IDocupadas, arrayID)) {
-        creaBarco("scoutV.png");
+        creaBarco('scoutV.png');
       }
     }
   } else if (longitud == 2) {
     if (direccion == 0 && !horizontales2NO.includes(parseInt(casilla.id))) {
-      sentido = "H";
+      sentido = 'H';
       if (!findCommonElements(IDocupadas, arrayID)) {
-        creaBarco("canoaH.png");
+        creaBarco('canoaH.png');
       }
     } else if (
       direccion == 1 &&
       !verticales2NO.includes(parseInt(casilla.id))
     ) {
-      sentido = "V";
+      sentido = 'V';
       if (!findCommonElements(IDocupadas, arrayID)) {
-        creaBarco("canoaV.png");
+        creaBarco('canoaV.png');
       }
     }
   }
@@ -559,8 +559,8 @@ function updateOcupadas() {
     }
   }
   if (IDocupadas.length == 19) {
-    document.getElementById("barcos").style.display = "none";
-    tablero("suGrid");
+    document.getElementById('barcos').style.display = 'none';
+    tablero('suGrid');
     longitud = 5;
     enemigoDespliegue();
   }
@@ -633,7 +633,7 @@ function casillaMedia(IDBarco, centro, i, PrimCasilla) {
 
 // posiciona barcos del enemigo
 function enemigoDespliegue() {
-  console.log("se llama al despliegue");
+  console.log('se llama al despliegue');
   let dirTemp = randomElementArr(VoH);
   let tempPosition;
   let fila;
@@ -642,10 +642,10 @@ function enemigoDespliegue() {
   let UltCasilla;
   // comprueba si está libre y coloca
   function checkIfFree(direction, IDBarco) {
-    console.log("se chequea");
+    console.log('se chequea');
     PrimCasilla = getRandomArbitrary(0, 10 - longitud);
     UltCasilla = PrimCasilla + longitud;
-    if (direction === "H") {
+    if (direction === 'H') {
       fila = getRandomArbitrary(0, 9);
       tempPosition = [];
       for (let i = PrimCasilla; i < UltCasilla; i++) {
@@ -654,7 +654,7 @@ function enemigoDespliegue() {
       if (todoCeros(tempPosition)) {
         for (let i = PrimCasilla; i < UltCasilla; i++) {
           su_game_board[fila][i].barco = IDBarco;
-          su_game_board[fila][i].sentido = "H";
+          su_game_board[fila][i].sentido = 'H';
           casillaMedia(IDBarco, su_game_board[fila][i], i, PrimCasilla);
         }
         console.log(
@@ -683,7 +683,7 @@ function enemigoDespliegue() {
       if (todoCeros(tempPosition)) {
         for (let i = PrimCasilla; i < UltCasilla; i++) {
           su_game_board[i][columna].barco = IDBarco;
-          su_game_board[i][columna].sentido = "V";
+          su_game_board[i][columna].sentido = 'V';
           casillaMedia(IDBarco, su_game_board[i][columna], i, PrimCasilla);
         }
         console.log(
@@ -742,26 +742,26 @@ function primeraCifra(numero) {
 }
 // crea fuego en la casilla
 function prender(casilla) {
-  const img = document.createElement("img");
-  img.style.width = "8vh";
-  img.style.height = "8vh";
-  img.style.zIndex = "15";
-  img.style.position = "absolute";
-  img.style.transform = "translate(-4vh,-5vh)";
-  img.src = "fireball.gif";
+  const img = document.createElement('img');
+  img.style.width = '8vh';
+  img.style.height = '8vh';
+  img.style.zIndex = '15';
+  img.style.position = 'absolute';
+  img.style.transform = 'translate(-4vh,-5vh)';
+  img.src = 'fireball.gif';
   document.getElementById(casilla.id).appendChild(img);
 }
 // revela el barco hundido
 function mostrarBarco(valorBarco, fila, columna) {
-  const img = document.createElement("img");
+  const img = document.createElement('img');
   longitud = primeraCifra(valorBarco);
   sentido = su_game_board[fila][columna].sentido;
   let barco;
   // para el caso especial del barco insignia
   if (longitud == 5) {
-    if (sentido === "H") {
+    if (sentido === 'H') {
       barco = barcosIMG[longitud][inicialNIA][0];
-    } else if (sentido === "V") {
+    } else if (sentido === 'V') {
       barco = barcosIMG[longitud][inicialNIA][1];
     }
     img.src = barco;
@@ -769,9 +769,9 @@ function mostrarBarco(valorBarco, fila, columna) {
   }
   // para los barcos genericos
   else {
-    if (sentido === "H") {
+    if (sentido === 'H') {
       barco = barcosIMG[longitud][0];
-    } else if (sentido === "V") {
+    } else if (sentido === 'V') {
       barco = barcosIMG[longitud][1];
     }
     img.src = barco;
@@ -789,10 +789,10 @@ function hitOrMiss(casilla, board) {
   // si es agua
   if (board[fila][columna].barco === 0) {
     aguaS.play();
-    if (turn === "AI") {
+    if (turn === 'AI') {
       // barco 0 es si es agua
       arrayVisionIA[fila][columna].barco = 0;
-      if (modo === "apuntando") {
+      if (modo === 'apuntando') {
         posibleCasillaID.splice(posibleCasillaID.indexOf(casilla.id), 1);
       }
     }
@@ -800,7 +800,7 @@ function hitOrMiss(casilla, board) {
   // si es acierto
   else {
     // tocado 1 es un tocado. tocado 2 es hundido
-    if (turn === "AI") {
+    if (turn === 'AI') {
       arrayVisionIA[fila][columna].barco = board[fila][columna].barco;
       board[fila][columna].tocado = 1;
       const valorBarco = board[fila][columna].barco;
@@ -815,7 +815,7 @@ function hitOrMiss(casilla, board) {
         ultimoDisparoID = parseInt(`${fila}${columna}`);
         tocadoS.play();
         prender(casilla);
-        modo = "apuntando";
+        modo = 'apuntando';
         aciertos++;
         // esto se activa solo si es el primer acierto de todo y hace pensar a la IA entorno a él
         if (aciertos === 1 && primerAciertoID < 0) {
@@ -833,7 +833,7 @@ function hitOrMiss(casilla, board) {
         prender(casilla);
         aciertos++;
         primerAciertoID = -1;
-        modo = "buscando";
+        modo = 'buscando';
       }
     } else {
       board[fila][columna].tocado = 1;
@@ -858,7 +858,7 @@ function hitOrMiss(casilla, board) {
 let eleccionIA;
 // IA disparo
 function disparoIA() {
-  turn = "AI";
+  turn = 'AI';
   // IA piensa y dispara
   eleccionIA = IA();
   trebuchetS.play();
@@ -867,14 +867,14 @@ function disparoIA() {
   const casillaTop = objetivo.top;
   const casillaLeft = objetivo.left;
   // hace aparecer y desaparecer el trebuchet
-  document.getElementById("trebuchetIA").style.display = "block";
+  document.getElementById('trebuchetIA').style.display = 'block';
   setTimeout(() => {
-    document.getElementById("trebuchetIA").style.display = "none";
+    document.getElementById('trebuchetIA').style.display = 'none';
   }, 1000);
   // hace aparecer el proyectil y que se mueva al sitio
   setTimeout(() => {
-    document.getElementById("fireballIA").style.display = "block";
-    document.getElementById("fireballIA").animate(
+    document.getElementById('fireballIA').style.display = 'block';
+    document.getElementById('fireballIA').animate(
       [
         // keyframes
         { left: `${casillaLeft}px`, top: `${casillaTop}px` },
@@ -887,16 +887,16 @@ function disparoIA() {
   }, 500);
   // hace desaparecer el proyectil
   setTimeout(() => {
-    document.getElementById("fireballIA").style.display = "none";
+    document.getElementById('fireballIA').style.display = 'none';
     hitOrMiss(eleccionIA.casillaGrafica, tu_game_board);
     // check si ha ganado
     if (contBarcosTocados.length === 19) {
       gameEnd();
     } else {
       // deja volver a disparar al jugador
-      document.getElementById("suGrid").style.pointerEvents = "auto";
+      document.getElementById('suGrid').style.pointerEvents = 'auto';
       setTimeout(() => {
-        turn = "jugador";
+        turn = 'jugador';
       }, 500);
     }
   }, 1000);
@@ -907,21 +907,21 @@ function gameEnd() {
   BSO.pause();
   let civVic;
   let texto;
-  if (turn === "jugador") {
+  if (turn === 'jugador') {
     civVic = civPJ;
     victoriaS.play();
-    texto = "victoria";
+    texto = 'victoria';
   } else {
     civVic = civIA;
     derrotaS.play();
-    texto = "derrota";
-    document.getElementById("ganador").style.color = "rgb(127, 0, 0)";
+    texto = 'derrota';
+    document.getElementById('ganador').style.color = 'rgb(127, 0, 0)';
     derrotaS.play();
   }
 
-  document.getElementById("ganadorFoto").src = `${civVic}victoria.jpg`;
-  document.getElementById("fin").style.display = "flex";
-  document.getElementById("ganador").innerText = texto;
+  document.getElementById('ganadorFoto').src = `${civVic}victoria.jpg`;
+  document.getElementById('fin').style.display = 'flex';
+  document.getElementById('ganador').innerText = texto;
 }
 let ultimoDisparoID;
 let indicesUsadosBuscando = [];
@@ -974,11 +974,11 @@ function IA() {
     return escogida;
   }
   // el modo cambia en la funcion hitOrMiss
-  if (modo === "buscando") {
+  if (modo === 'buscando') {
     turnoNumber++;
     return buscando();
   }
-  if (modo === "apuntando") {
+  if (modo === 'apuntando') {
     turnoNumber++;
     return apuntando();
   }
@@ -1140,11 +1140,11 @@ function apuntando() {
 }
 
 // always music, always good
-if (typeof BSO.loop === "boolean") {
+if (typeof BSO.loop === 'boolean') {
   BSO.loop = true;
 } else {
   BSO.addEventListener(
-    "ended",
+    'ended',
     function () {
       this.currentTime = 0;
       this.play();
